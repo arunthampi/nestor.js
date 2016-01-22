@@ -18,7 +18,7 @@ var Robot = function(teamId, name, alias) {
   this.alias = alias;
   this.listeners = [];
   this.Response = Response;
-  this.adapter = new NestorAdapter(this.teamId);
+  this.adapter = new NestorAdapter(this);
   this.logger = new Log(process.env.NESTOR_LOG_LEVEL || 'info');
   this.parseVersion();
   this.globalHttpOptions = {};

@@ -2,12 +2,12 @@ var Adapter, chai, expect, sinon;
 
 var chai = require('chai');
 var sinon = require('sinon');
-var Adapter = require('../src/adapter');
+var NestorAdapter = require('../src/adapter');
 
 chai.use(require('sinon-chai'));
 expect = chai.expect;
 
-describe('Adapter', function() {
+describe('NestorAdapter', function() {
   beforeEach(function() {
     this.robot = {
       receive: sinon.spy()
@@ -16,7 +16,7 @@ describe('Adapter', function() {
 
   describe('Public API', function() {
     beforeEach(function() {
-      this.adapter = new Adapter(this.robot);
+      this.adapter = new NestorAdapter(this.robot);
     });
 
     it('assigns robot', function() {
