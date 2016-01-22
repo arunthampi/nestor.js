@@ -1,0 +1,36 @@
+{
+  "name": "nestor",
+  "version": "0.1.0",
+  "description": "Toolkit to create your Nestor Bot App",
+  "main": "index.js",
+  "scripts": {
+  },
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/zerobotlabs/nestor.js.git"
+  },
+  "dependencies": {
+    "async": ">= 0.1.0 <1.0.0",
+    "log": "1.4.0",
+    "coffee-script": "1.6.3",
+    "scoped-http-client": "0.11.0"
+  },
+  "devDependencies": {
+    "mocha": "^2.1.0",
+    "mockery": "^1.4.0",
+    "sinon-chai": "^2.8.0",
+    "sinon":"~1.17.0",
+    "chai":"~2.1.0"
+  },
+  "keywords": [
+    "slack",
+    "bot",
+    "hubot"
+  ],
+  "author": "Arun Thampi",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/zerobotlabs/nestor.js/issues"
+  },
+  "homepage": "https://github.com/zerobotlabs/nestor.js"
+}
