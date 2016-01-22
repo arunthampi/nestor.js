@@ -20,34 +20,12 @@ Response.prototype.send = function() {
   }].concat(__slice.call(strings)));
 };
 
-Response.prototype.emote = function() {
-  var strings;
-  strings = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-  return this.runWithMiddleware.apply(this, ["emote", {
-    plaintext: true
-  }].concat(__slice.call(strings)));
-};
-
 Response.prototype.reply = function() {
   var strings;
   strings = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
   return this.runWithMiddleware.apply(this, ["reply", {
     plaintext: true
   }].concat(__slice.call(strings)));
-};
-
-Response.prototype.topic = function() {
-  var strings;
-  strings = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-  return this.runWithMiddleware.apply(this, ["topic", {
-    plaintext: true
-  }].concat(__slice.call(strings)));
-};
-
-Response.prototype.play = function() {
-  var strings;
-  strings = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-  return this.runWithMiddleware.apply(this, ["play"].concat(__slice.call(strings)));
 };
 
 Response.prototype.locked = function() {
