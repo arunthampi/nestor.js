@@ -43,13 +43,5 @@ describe('Adapter', function() {
       });
     });
   });
-
-  it('dispatches received messages to the robot', function() {
-    this.robot.receive = sinon.spy();
-    this.adapter = new Adapter(this.robot);
-    this.message = sinon.spy();
-    this.adapter.receive(this.message);
-    expect(this.robot.receive).to.have.been.calledWith(this.message);
-  });
 });
 

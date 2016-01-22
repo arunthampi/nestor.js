@@ -21,10 +21,6 @@ var Adapter = (function(_super) {
     envelope = arguments[0], strings = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
   };
 
-  Adapter.prototype.receive = function(message) {
-    return this.robot.receive(message);
-  };
-
   return Adapter;
 
 })(EventEmitter);
