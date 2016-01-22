@@ -282,6 +282,7 @@ describe('Middleware', function() {
       this.robot = new Robot('TDEADBEEF', 'Nestorbot', 'nestorbot');
       this.user = new User('1', {
         name: 'nestorbottester',
+        room: 'CDEADBEEF1'
       });
       this.middleware = sinon.spy(function(context, next, done) {
         return next(done);

@@ -7,6 +7,7 @@ var Response = function Response(robot, message, match) {
   this.message = message;
   this.match = match;
   this.envelope = {
+    room: this.message.room,
     user: this.message.user,
     message: this.message
   };

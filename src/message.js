@@ -3,6 +3,7 @@ var __hasProp = {}.hasOwnProperty,
 
 var Message = function(user, done) {
   this.user = user;
+  this.room = this.user.room;
   this.done = done != null ? done : false;
 };
 

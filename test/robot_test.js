@@ -2,15 +2,21 @@ var chai = require('chai');
 var sinon = require('sinon');
 var mockery = require('mockery');
 var ScopedHttpClient = require('scoped-http-client');
+var User = require('../src/user');
 var Robot = require('../src/robot');
 var _ref = require('../src/message'), CatchAllMessage = _ref.CatchAllMessage, TextMessage = _ref.TextMessage;
 
 chai.use(require('sinon-chai'));
 expect = chai.expect;
+var User = require('../src/user');
 
 describe('Robot', function() {
   beforeEach(function() {
     this.robot = new Robot('TDEADBEEF', 'Nestorbot', 'nestorbot');
+    this.user = new User('1', {
+      name: 'nestorbottester',
+      room: 'CDEADBEEF1'
+    });
   });
 
   describe('Unit Tests', function() {

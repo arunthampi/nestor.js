@@ -27,7 +27,8 @@ describe('Listener', function() {
 
     this.user = new User({
       id: 1,
-      name: 'hubottester',
+      name: 'nestorbottester',
+      room: 'CDEADBEEF1'
     });
   });
 

@@ -12,6 +12,7 @@ describe('Message', function() {
     this.user = new User({
       id: 1,
       name: 'nestorbottester',
+      room: 'CDEADBEEF1'
     });
   });
 
