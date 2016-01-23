@@ -1,5 +1,6 @@
 var chai = require('chai');
 var sinon = require('sinon');
+var nock = require('nock');
 var Robot = require('../src/robot');
 var _ref = require('../src/message'), CatchAllMessage = _ref.CatchAllMessage, TextMessage = _ref.TextMessage;
 var Response = require('../src/response');
@@ -16,6 +17,7 @@ describe('Middleware', function() {
         emit: sinon.spy()
       };
       this.middleware = new Middleware(this.robot);
+      nock.disableNetConnect();
     });
 
     describe('#execute', function() {

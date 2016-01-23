@@ -1,5 +1,6 @@
 var chai = require('chai');
 var sinon = require('sinon');
+var nock = require('nock');
 var User = require('../src/user');
 var _ref = require('../src/message'), CatchAllMessage = _ref.CatchAllMessage, Message = _ref.Message, TextMessage = _ref.TextMessage;
 
@@ -14,6 +15,7 @@ describe('Message', function() {
       name: 'nestorbottester',
       room: 'CDEADBEEF1'
     });
+    nock.disableNetConnect();
   });
 
   describe('Unit Tests', function() {

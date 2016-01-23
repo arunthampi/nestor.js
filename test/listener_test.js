@@ -2,6 +2,7 @@ var chai = require('chai');
 var sinon = require('sinon');
 chai.use(require('sinon-chai'));
 var expect = chai.expect;
+var nock = require('nock');
 
 var _ref = require('../src/message'), CatchAllMessage = _ref.CatchAllMessage, TextMessage = _ref.TextMessage;
 var _ref1 = require('../src/listener'), Listener = _ref1.Listener, TextListener = _ref1.TextListener;
@@ -30,6 +31,8 @@ describe('Listener', function() {
       name: 'nestorbottester',
       room: 'CDEADBEEF1'
     });
+
+    nock.disableNetConnect();
   });
 
   describe('Unit Tests', function() {

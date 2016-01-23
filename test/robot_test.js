@@ -1,6 +1,7 @@
 var chai = require('chai');
 var sinon = require('sinon');
 var mockery = require('mockery');
+var nock = require('nock');
 var ScopedHttpClient = require('scoped-http-client');
 var User = require('../src/user');
 var Robot = require('../src/robot');
@@ -17,6 +18,7 @@ describe('Robot', function() {
       name: 'nestorbottester',
       room: 'CDEADBEEF1'
     });
+    nock.disableNetConnect();
   });
 
   describe('Unit Tests', function() {
