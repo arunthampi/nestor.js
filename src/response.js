@@ -2,6 +2,13 @@
 var Response,
   __slice = [].slice;
 
+// Public: Responses are sent to matching listeners. Messages know about the
+// content and user that made the original message, and how to reply back to
+// them.
+//
+// robot   - A Robot instance.
+// message - A Message instance.
+// match   - A Match object from the successful Regex match.
 var Response = function Response(robot, message, match) {
   this.robot = robot;
   this.message = message;
@@ -13,6 +20,12 @@ var Response = function Response(robot, message, match) {
   };
 }
 
+// Public: Posts a message back to the chat source
+//
+// strings - One or more strings to be posted. The order of these strings
+//           should be kept intact.
+//
+// Returns nothing.
 Response.prototype.send = function() {
   var strings;
   strings = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -21,6 +34,12 @@ Response.prototype.send = function() {
   }].concat(__slice.call(strings)));
 };
 
+// Public: Posts a message mentioning the current user.
+//
+// strings - One or more strings to be posted. The order of these strings
+//           should be kept intact.
+//
+// Returns nothing.
 Response.prototype.reply = function() {
   var strings;
   strings = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
@@ -29,14 +48,8 @@ Response.prototype.reply = function() {
   }].concat(__slice.call(strings)));
 };
 
-Response.prototype.locked = function() {
-  var strings;
-  strings = 1 <= arguments.length ? __slice.call(arguments, 0) : [];
-  return this.runWithMiddleware.apply(this, ["locked", {
-    plaintext: true
-  }].concat(__slice.call(strings)));
-};
-
+// Private: Call with a method for the given strings using response
+// middleware.
 Response.prototype.runWithMiddleware = function() {
   var callback, context, copy, methodName, opts, responseMiddlewareDone, runAdapterSend, strings,
     _this = this;
@@ -67,14 +80,28 @@ Response.prototype.runWithMiddleware = function() {
   return this.robot.middleware.response.execute(context, runAdapterSend, responseMiddlewareDone);
 };
 
+// Public: Picks a random item from the given items.
+//
+// items - An Array of items.
+//
+// Returns a random item.
 Response.prototype.random = function(items) {
   return items[Math.floor(Math.random() * items.length)];
 };
 
+// Public: Tell the message to stop dispatching to listeners
+//
+// Returns nothing.
 Response.prototype.finish = function() {
   return this.message.finish();
 };
 
+// Public: Creates a scoped http client with chainable methods for
+// modifying the request. This doesn't actually make a request though.
+// Once your request is assembled, you can call `get()`/`post()`/etc to
+// send the request.
+//
+// Returns a ScopedClient instance.
 Response.prototype.http = function(url, options) {
   return this.robot.http(url, options);
 };
