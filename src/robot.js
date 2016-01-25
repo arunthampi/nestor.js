@@ -3,7 +3,6 @@ var Path = require('path');
 var HttpClient = require('scoped-http-client');
 var async = require('async');
 var Response = require('./response');
-var NestorAdapter = require('./adapter');
 var _ref = require('./listener'), Listener = _ref.Listener, TextListener = _ref.TextListener;
 var Middleware = require('./middleware');
 var CatchAllMessage = require('./message').CatchAllMessage;
@@ -26,7 +25,6 @@ var Robot = function(teamId, name, alias) {
   this.alias = alias;
   this.listeners = [];
   this.Response = Response;
-  this.adapter = new NestorAdapter(this);
   this.logger = new Log(process.env.NESTOR_LOG_LEVEL || 'info');
   this.parseVersion();
   this.globalHttpOptions = {};

@@ -2,7 +2,7 @@ var Adapter, chai, expect, sinon;
 
 var chai = require('chai');
 var sinon = require('sinon');
-var NestorAdapter = require('../src/adapter');
+var NestorAdapter = require('../src/adapter').NestorAdapter;
 var nock = require('nock');
 var User = require('../src/user');
 var Robot = require('../src/robot');
@@ -11,6 +11,8 @@ chai.use(require('sinon-chai'));
 expect = chai.expect;
 
 describe('NestorAdapter', function() {
+  var robot, adapter;
+
   beforeEach(function() {
     this.robot = new Robot('TDEADBEEF1', 'Nestorbot', 'nestorbot');
     nock.disableNetConnect();
