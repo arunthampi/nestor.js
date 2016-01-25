@@ -7,10 +7,12 @@ var _ref = require('./listener'), Listener = _ref.Listener, TextListener = _ref.
 var Middleware = require('./middleware');
 var CatchAllMessage = require('./message').CatchAllMessage;
 var Brain = require('./brain');
+var EventEmitter = require('events').EventEmitter;
 
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __slice = [].slice,
-    __hasProp = {}.hasOwnProperty;
+    __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; };
 
 // Robots receive messages from a chat source (Campfire, irc, etc), and
 // dispatch them to matching listeners.
@@ -21,11 +23,13 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
 //
 // Returns nothing.
 var Robot = function(teamId, name, alias) {
+  var _this = this;
   this.teamId = teamId;
   this.name = name;
   this.alias = alias;
   this.listeners = [];
   this.brain = new Brain(this);
+  this.events = new EventEmitter;
   this.Response = Response;
   this.logger = new Log(process.env.NESTOR_LOG_LEVEL || 'info');
   this.parseVersion();
@@ -36,6 +40,10 @@ var Robot = function(teamId, name, alias) {
     response: new Middleware(this),
     receive: new Middleware(this)
   };
+  this.onUncaughtException = function(err) {
+    return _this.emit('error', err);
+  };
+  process.on('uncaughtException', this.onUncaughtException);
 };
 
 // Public: Adds a custom Listener with the provided matcher, options, and
@@ -339,6 +347,50 @@ Robot.prototype.reply = function() {
   var ref2, strings, user;
   user = arguments[0], strings = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
   return (ref2 = this.adapter).reply.apply(ref2, [user].concat(__slice.call(strings)));
+};
+
+// Public: A wrapper around the EventEmitter API to make usage
+// semantically better.
+//
+// event    - The event name.
+// listener - A Function that is called with the event parameter
+//            when event happens.
+//
+// Returns nothing.
+Robot.prototype.on = function() {
+  var args, event, _ref2;
+  event = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+  return (_ref2 = this.events).on.apply(_ref2, [event].concat(__slice.call(args)));
+};
+
+// Public: A wrapper around the EventEmitter API to make usage
+// semantically better.
+//
+// event   - The event name.
+// args...  - Arguments emitted by the event
+//
+// Returns nothing.
+Robot.prototype.emit = function() {
+  var args, event, _ref2;
+  event = arguments[0], args = 2 <= arguments.length ? __slice.call(arguments, 1) : [];
+  return (_ref2 = this.events).emit.apply(_ref2, [event].concat(__slice.call(args)));
+};
+
+// Public: Kick off the event loop for the adapter
+//
+// Returns nothing.
+Robot.prototype.run = function() {
+  this.emit("running");
+  return this.adapter.run();
+};
+
+// Public: Gracefully shutdown the robot process
+//
+// Returns nothing.
+Robot.prototype.shutdown = function() {
+  process.removeListener('uncaughtException', this.onUncaughtException);
+  this.adapter.close();
+  this.brain.close();
 };
 
 // Private: Extend obj with objects passed as additional args.
