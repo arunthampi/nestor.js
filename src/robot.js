@@ -6,6 +6,7 @@ var Response = require('./response');
 var _ref = require('./listener'), Listener = _ref.Listener, TextListener = _ref.TextListener;
 var Middleware = require('./middleware');
 var CatchAllMessage = require('./message').CatchAllMessage;
+var Brain = require('./brain');
 
 var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; i < l; i++) { if (i in this && this[i] === item) return i; } return -1; },
     __slice = [].slice,
@@ -24,6 +25,7 @@ var Robot = function(teamId, name, alias) {
   this.name = name;
   this.alias = alias;
   this.listeners = [];
+  this.brain = new Brain(this);
   this.Response = Response;
   this.logger = new Log(process.env.NESTOR_LOG_LEVEL || 'info');
   this.parseVersion();
