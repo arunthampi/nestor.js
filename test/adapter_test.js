@@ -61,10 +61,10 @@ describe('NestorAdapter', function() {
 
         it('should make a request to the Nestor API to send a message back to the user', function(done) {
           this.adapter.send(envelope, 'hello');
-          setTimeout(function() {
+          process.nextTick(function() {
             expect(scope.isDone()).to.be.true;
             done();
-          }, 1000);
+          });
         });
       });
     });
@@ -102,10 +102,10 @@ describe('NestorAdapter', function() {
 
         it('should make a request to the Nestor API to send a message back to the user', function(done) {
           this.adapter.reply(envelope, 'hello');
-          setTimeout(function() {
+          process.nextTick(function() {
             expect(scope.isDone()).to.be.true;
             done();
-          }, 1000);
+          });
         });
       });
     });
