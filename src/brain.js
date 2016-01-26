@@ -111,7 +111,7 @@ Brain = (function(_super) {
   Brain.prototype.mergeData = function(data) {
     var k;
     for (k in data || {}) {
-      this.data[k] = data[k];
+      this.data._private[k] = data[k];
     }
     return this.emit('loaded', this.data);
   };
