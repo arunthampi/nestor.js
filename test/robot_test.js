@@ -310,7 +310,7 @@ describe('Robot', function() {
         var module = require('module');
         var script = sinon.spy(function(robot) {});
         this.sandbox.stub(module, '_load').returns(script);
-        this.robot.loadFile('./scripts', 'test-script.coffee');
+        this.robot.loadFile('./scripts', 'test-script.js');
         expect(module._load).to.have.been.calledWith('scripts/test-script');
       });
 
@@ -322,7 +322,7 @@ describe('Robot', function() {
         });
 
         it('should call the script with the Robot', function() {
-          this.robot.loadFile('./scripts', 'test-script.coffee');
+          this.robot.loadFile('./scripts', 'test-script.js');
           expect(this.script).to.have.been.calledWith(this.robot);
         });
       });
@@ -336,7 +336,7 @@ describe('Robot', function() {
 
         it('logs a warning', function() {
           sinon.stub(this.robot.logger, 'warning');
-          this.robot.loadFile('./scripts', 'test-script.coffee');
+          this.robot.loadFile('./scripts', 'test-script.js');
           expect(this.robot.logger.warning).to.have.been.called;
         });
       });

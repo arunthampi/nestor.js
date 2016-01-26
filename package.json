@@ -13,13 +13,11 @@
   "dependencies": {
     "async": ">= 0.1.0 <1.0.0",
     "log": "1.4.0",
-    "coffee-script": "1.6.3",
     "scoped-http-client": "0.11.0",
     "qs": "~6.0.2"
   },
   "devDependencies": {
     "mocha": "^2.1.0",
-    "coffee-errors": "0.8.6",
     "mockery": "^1.4.0",
     "sinon-chai": "^2.8.0",
     "sinon":"~1.17.0",
