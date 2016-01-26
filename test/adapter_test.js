@@ -6,6 +6,7 @@ var NestorAdapter = require('../src/adapter').NestorAdapter;
 var nock = require('nock');
 var User = require('../src/user');
 var Robot = require('../src/robot');
+var qs = require('qs');
 
 chai.use(require('sinon-chai'));
 expect = chai.expect;
@@ -47,14 +48,14 @@ describe('NestorAdapter', function() {
                           'Authorization': 'authToken'
                         }
                       }).
-                      post('/teams/TDEADBEEF1/messages', {
+                      post('/teams/TDEADBEEF1/messages', qs.stringify({
                           message: {
                             user_uid: 'UDEADBEEF1',
                             channel_uid: 'CDEADBEEF1',
                             strings: '["hello"]',
                             reply: false
                           }
-                      }).
+                      })).
                       reply(202);
         });
 
@@ -88,14 +89,14 @@ describe('NestorAdapter', function() {
                           'Authorization': 'authToken'
                         }
                       }).
-                      post('/teams/TDEADBEEF1/messages', {
+                      post('/teams/TDEADBEEF1/messages', qs.stringify({
                           message: {
                             user_uid: 'UDEADBEEF1',
                             channel_uid: 'CDEADBEEF1',
                             strings: '["hello"]',
                             reply: true
                           }
-                      }).
+                      })).
                       reply(202);
         });
 

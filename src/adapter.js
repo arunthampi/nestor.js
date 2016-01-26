@@ -1,5 +1,6 @@
 var HttpClient = require('scoped-http-client');
 var EventEmitter = require('events').EventEmitter;
+var qs = require('qs');
 
 var __hasProp = {}.hasOwnProperty,
     __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
@@ -85,7 +86,7 @@ var NestorAdapter = (function(_super) {
 
     HttpClient.create(url).
                header('Authorization', authToken).
-               post(JSON.stringify({
+               post(qs.stringify({
                       message: {
                         user_uid: envelope.user.id,
                         channel_uid: envelope.room,
