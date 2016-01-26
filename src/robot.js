@@ -381,7 +381,7 @@ Robot.prototype.emit = function() {
 // Returns nothing.
 Robot.prototype.run = function() {
   this.emit("running");
-  return this.adapter.run();
+  this.adapter.run();
 };
 
 // Public: Gracefully shutdown the robot process
