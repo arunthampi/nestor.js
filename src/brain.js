@@ -1,13 +1,13 @@
-var Brain, EventEmitter, User, extend,
-  __hasProp = {}.hasOwnProperty,
-  __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
-  __slice = [].slice;
+var __hasProp = {}.hasOwnProperty,
+    __extends = function(child, parent) { for (var key in parent) { if (__hasProp.call(parent, key)) child[key] = parent[key]; } function ctor() { this.constructor = child; } ctor.prototype = parent.prototype; child.prototype = new ctor(); child.__super__ = parent.prototype; return child; },
+    __slice = [].slice;
 
-EventEmitter = require('events').EventEmitter;
+var EventEmitter = require('events').EventEmitter;
+var User = require('./user');
+var HttpClient = require('scoped-http-client');
+var qs = require('qs');
 
-User = require('./user');
-
-Brain = (function(_super) {
+var Brain = (function(_super) {
   __extends(Brain, _super);
 
   // Represents persistent storage for the robot. Extend this.
@@ -21,6 +21,29 @@ Brain = (function(_super) {
     this.users = {};
     this.autoSave = true;
     this.resetSaveInterval(5);
+    this.robot = robot;
+
+    // When a save function is received
+    this.on('save', function(data) {
+      var authToken = process.env.__NESTOR_AUTH_TOKEN;
+      var host = process.env.__NESTOR_API_HOST;
+
+      if(host == null) {
+        host = "https://v2.asknestor.me";
+      }
+      var url = host + "/teams/" + _this.robot.teamId + "/set_brain";
+
+      var params =  {
+                      _method: 'PATCH',
+                      team: {
+                        brain: data._private,
+                      },
+                    };
+
+      HttpClient.create(url).
+                 header('Authorization', authToken).
+                 post(qs.stringify(params))(function(err, res, body) {});
+    });
   }
 
   // Public: Store key-value pair under the private namespace and extend

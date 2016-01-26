@@ -2,14 +2,19 @@ var Brain = require('../src/brain');
 var User = require('../src/user');
 var chai = require('chai');
 var sinon = require('sinon');
+var nock = require('nock');
+var qs = require('qs');
 
 chai.use(require('sinon-chai'));
 expect = chai.expect;
 
 describe('Brain', function() {
   beforeEach(function() {
+    nock.disableNetConnect();
+
     this.clock = sinon.useFakeTimers();
     this.mockRobot = {
+      teamId: 'TDEADBEEF1',
       emit: function() {},
       on: function() {}
     };
@@ -21,7 +26,7 @@ describe('Brain', function() {
     this.user2 = this.brain.userForId('2', {
       name: 'Guy One Two'
     });
-    return this.user3 = this.brain.userForId('3', {
+    this.user3 = this.brain.userForId('3', {
       name: 'Girl Three'
     });
   });
@@ -56,11 +61,37 @@ describe('Brain', function() {
     });
 
     describe('#save', function() {
-      it('emits a save event', function() {
-        sinon.spy(this.brain, 'emit');
-        this.brain.save();
+      context('with valid data', function() {
+        var scope;
 
-        expect(this.brain.emit).to.have.been.calledWith('save', this.brain.data);
+        beforeEach(function() {
+          process.env.__NESTOR_AUTH_TOKEN = 'authToken';
+          this.brain.mergeData({a: 'b', c: 'd'});
+
+          scope = nock('https://v2.asknestor.me', {
+                        reqheaders: {
+                          'Authorization': 'authToken'
+                        }
+                      }).
+                      post('/teams/TDEADBEEF1/set_brain', qs.stringify({
+                          _method: 'PATCH',
+                          team: {
+                            brain: {
+                              a: 'b',
+                              c: 'd'
+                            }
+                          },
+                      })).reply(200);
+        });
+
+        it('saves the brain to Nestor', function(done) {
+          this.brain.save();
+
+          process.nextTick(function() {
+            expect(scope.isDone()).to.be.true;
+            done();
+          });
+        });
       });
     });
 
