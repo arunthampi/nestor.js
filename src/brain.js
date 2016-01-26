@@ -16,9 +16,9 @@ Brain = (function(_super) {
   function Brain(robot) {
     var _this = this;
     this.data = {
-      users: {},
       _private: {}
     };
+    this.users = {};
     this.autoSave = true;
     this.resetSaveInterval(5);
   }
@@ -120,7 +120,7 @@ Brain = (function(_super) {
   //
   // Returns an Array of User objects.
   Brain.prototype.users = function() {
-    return this.data.users;
+    return this.users;
   };
 
   // Public: Get a User object given a unique identifier.
@@ -128,14 +128,14 @@ Brain = (function(_super) {
   // Returns a User instance of the specified user.
   Brain.prototype.userForId = function(id, options) {
     var user;
-    user = this.data.users[id];
+    user = this.users[id];
     if (!user) {
       user = new User(id, options);
-      this.data.users[id] = user;
+      this.users[id] = user;
     }
     if (options && options.room && (!user.room || user.room !== options.room)) {
       user = new User(id, options);
-      this.data.users[id] = user;
+      this.users[id] = user;
     }
     return user;
   };
@@ -147,10 +147,10 @@ Brain = (function(_super) {
     var k, lowerName, result, userName;
     result = null;
     lowerName = name.toLowerCase();
-    for (k in this.data.users || {}) {
-      userName = this.data.users[k]['name'];
+    for (k in this.users || {}) {
+      userName = this.users[k]['name'];
       if ((userName != null) && userName.toString().toLowerCase() === lowerName) {
-        result = this.data.users[k];
+        result = this.users[k];
       }
     }
     return result;
@@ -164,7 +164,7 @@ Brain = (function(_super) {
   Brain.prototype.usersForRawFuzzyName = function(fuzzyName) {
     var key, lowerFuzzyName, user, _ref, _results;
     lowerFuzzyName = fuzzyName.toLowerCase();
-    _ref = this.data.users || {};
+    _ref = this.users || {};
     _results = [];
     for (key in _ref) {
       user = _ref[key];

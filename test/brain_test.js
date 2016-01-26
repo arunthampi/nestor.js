@@ -189,12 +189,12 @@ describe('Brain', function() {
       describe('when there is no matching user ID', function() {
         it('creates a new User', function() {
           var newUser;
-          expect(this.brain.data.users).to.not.include.key('all-new-user');
+          expect(this.brain.users).to.not.include.key('all-new-user');
           newUser = this.brain.userForId('all-new-user');
 
           expect(newUser).to.be["instanceof"](User);
           expect(newUser.id).to.equal('all-new-user');
-          expect(this.brain.data.users).to.include.key('all-new-user');
+          expect(this.brain.users).to.include.key('all-new-user');
         });
 
         it('passes the provided options to the new User', function() {
