@@ -73,27 +73,37 @@ var NestorAdapter = (function(_super) {
   };
 
   NestorAdapter.prototype.__send = function(envelope, strings, reply) {
-    var authToken = process.env.__NESTOR_AUTH_TOKEN;
-    var host = process.env.__NESTOR_API_HOST;
-    if(host == null) {
-      host = "https://v2.asknestor.me";
-    }
-    var url = host + "/teams/" + this.robot.teamId + "/messages";
+    // If robot is in debugMode, then don't actually send response back
+    // just buffer them and Nestor will deal with it
+    if(this.robot.debugMode) {
+      if(reply) {
+        this.robot.toReply = this.robot.toReply.concat(strings);
+      } else {
+        this.robot.toSend = this.robot.toSend.concat(strings);
+      }
+    } else {
+      var authToken = process.env.__NESTOR_AUTH_TOKEN;
+      var host = process.env.__NESTOR_API_HOST;
+      if(host == null) {
+        host = "https://v2.asknestor.me";
+      }
+      var url = host + "/teams/" + this.robot.teamId + "/messages";
 
-    if(envelope == null || envelope.user == null || envelope.room == null || strings.length == 0) {
-      return;
-    }
+      if(envelope == null || envelope.user == null || envelope.room == null || strings.length == 0) {
+        return;
+      }
 
-    HttpClient.create(url).
-               header('Authorization', authToken).
-               post(qs.stringify({
-                      message: {
-                        user_uid: envelope.user.id,
-                        channel_uid: envelope.room,
-                        strings: JSON.stringify(strings),
-                        reply: reply
-                      }
-                    }))(function(err, res, body) {});
+      HttpClient.create(url).
+                 header('Authorization', authToken).
+                 post(qs.stringify({
+                        message: {
+                          user_uid: envelope.user.id,
+                          channel_uid: envelope.room,
+                          strings: JSON.stringify(strings),
+                          reply: reply
+                        }
+                      }))(function(err, res, body) {});
+    }
   }
 
   return NestorAdapter;

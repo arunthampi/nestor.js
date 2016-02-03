@@ -33,7 +33,24 @@ describe('NestorAdapter', function() {
         expect(this.adapter.send).to.be.a('function');
       });
 
-      context('with valid params', function() {
+      context('when in debug mode', function() {
+        var envelope;
+
+        beforeEach(function() {
+          this.robot.debugMode = true;
+          envelope = {
+            room: 'CDEADBEEF1',
+            user: new User('UDEADBEEF1')
+          };
+        });
+
+        it('should buffer responses in robot.toSend', function() {
+          this.adapter.send(envelope, 'hello');
+          expect(this.robot.toSend).to.eql(['hello']);
+        });
+      });
+
+      context('when not in debug mode', function() {
         var envelope, scope;
 
         beforeEach(function() {
@@ -74,7 +91,24 @@ describe('NestorAdapter', function() {
         expect(this.adapter.reply).to.be.a('function');
       });
 
-      context('with valid params', function() {
+      context('when in debug mode', function() {
+        var envelope;
+
+        beforeEach(function() {
+          this.robot.debugMode = true;
+          envelope = {
+            room: 'CDEADBEEF1',
+            user: new User('UDEADBEEF1')
+          };
+        });
+
+        it('should buffer responses in robot.toSend', function() {
+          this.adapter.reply(envelope, 'hello');
+          expect(this.robot.toReply).to.eql(['hello']);
+        });
+      });
+
+      context('when not in debug mode', function() {
         var envelope, scope;
 
         beforeEach(function() {

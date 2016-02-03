@@ -20,14 +20,18 @@ var __indexOf = [].indexOf || function(item) { for (var i = 0, l = this.length; 
 // teamId      - A String of the ID of the team that Hubot is serving
 // name        - A String of the robot name, defaults to nestorbot.
 // alias       - A String of the robot alias, defaults to nestorbot.
+// debugMode   - Boolean flag to denote if robot is in debug mode
 //
 // Returns nothing.
-var Robot = function(teamId, name, alias) {
+var Robot = function(teamId, name, alias, debugMode) {
   var _this = this;
   this.teamId = teamId;
   this.name = name;
   this.alias = alias;
+  this.debugMode = debugMode;
   this.listeners = [];
+  this.toSend = [];
+  this.toReply = [];
   this.brain = new Brain(this);
   this.events = new EventEmitter;
   this.Response = Response;
